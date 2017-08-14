@@ -31,7 +31,6 @@ void vector_set(Vector *vector, int index, int value)
 	  ++vector->size;
 	}
       vector->data[index] = value;
-      printf("vector->data[index]: %d\n", vector->data[index]);      
       return;
     }
   /* consider cases where the index is currently occupied */
@@ -43,6 +42,6 @@ void vector_set(Vector *vector, int index, int value)
       ++vector->size;
     }
   else if (vector->data[index] == 0)
-      vector_append(vector, value);
+    vector->data[index] = value;
   return;
 }
