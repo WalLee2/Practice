@@ -15,6 +15,8 @@ int main(void)
   printf("Done with vector append!\n");
   vector_set(&vector, 4552, 21312984);
   printf("Value at 27: %d\n", vector_get(&vector, 27));
+  vector_set(&vector, 1000, 40);
+  printf("Value at 1000: %d\n", vector_get(&vector, 1000));
   vector_free(&vector);
   return (0);
 }
