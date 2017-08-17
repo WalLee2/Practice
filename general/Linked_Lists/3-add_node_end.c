@@ -1,11 +1,9 @@
 #include "lists.h"
 /**
- *
- *
- *
- *
- *
- *
+ * add_node_end - Function that adds a node to the end of a singly linked list
+ * @head: The pointer that points to the beginning of the linked list
+ * @str: The string to be added to the node
+ * Return - The newly added node to the bottom of the list
  */
 list_t *add_node_end(list_t **head, const char *str)
 {
