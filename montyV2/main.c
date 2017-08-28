@@ -6,7 +6,7 @@
  * Return - 0 on success
  */
 int error = 0;
-int main (int ac, char *av[])
+int main(int ac, char *av[])
 {
 	int result;
 	unsigned int l_num;

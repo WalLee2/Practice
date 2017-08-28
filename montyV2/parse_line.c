@@ -4,23 +4,34 @@
  * @buff: The line to be tokenized
  * @head: The beginning of a doubly linked list
  * @l_num: Representation of the line number within the file to be parsed
- * Return - 1, -1, or 0 respectively: if there is no other freeing needed,
+ * Return: 1, -1, or 0 respectively: if there is no other freeing needed,
  * if the doubly LL needs to be freed, or success
  */
 int parse_line(char *buff, stack_t **head, unsigned int l_num)
 {
 	char *tok, *ascii_num;
 	int status;
+	static int toggle;
 
 	tok = strtok(buff, "\n \t");
-	if (tok == NULL || strcmp(tok, "nop") == 0)
+	if (tok == NULL || strcmp(tok, "nop") == 0 || tok[0] == '#')
 		return (0);
+	if (strcmp(tok, "stack") == 0)
+	{
+		toggle = 0;
+		return (0);
+	}
+	else if (strcmp(tok, "queue") == 0)
+	{
+		toggle = 1;
+		return (0);
+	}
 	if (strcmp(tok, "push") == 0)
 	{
 		ascii_num = strtok(NULL, "\n \t");
 		status = num_check(ascii_num, l_num);
 		if (status == 1)
-			m_push(head, atoi(ascii_num));
+			m_push(head, atoi(ascii_num), toggle);
 	}
 	else
 	{

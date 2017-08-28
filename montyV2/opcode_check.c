@@ -6,7 +6,7 @@
  * structs
  * @head: The beginning of a doubly linked list
  * @l_num: The line number, in the file, that's currently being evaluated
- * Return - 0 on success and -1 otherwise
+ * Return: 0 on success and -1 otherwise
  */
 int opcode_check(char *tok, stack_t **head, unsigned int l_num)
 {
@@ -15,7 +15,14 @@ int opcode_check(char *tok, stack_t **head, unsigned int l_num)
 		{"pint", m_pint},
 		{"pop", m_pop},
 		{"swap", m_swap},
-		{"add", m_add}
+		{"add", m_add},
+		{"sub", m_sub},
+		{"div", m_div},
+		{"mul", m_mul},
+		{"mod", m_mod},
+		{"pchar", m_pchar},
+		{"pstr", m_pstr},
+		{"rotl", m_rotl}
 	};
 	unsigned long size, i;
 
