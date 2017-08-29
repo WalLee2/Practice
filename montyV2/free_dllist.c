@@ -7,13 +7,10 @@ void free_dllist(stack_t **head)
 {
 	stack_t *current;
 
-	if (*head != NULL)
+	while (*head != NULL)
 	{
-		while (*head != NULL)
-		{
-			current = *head;
-			(*head) = (*head)->next;
-			free(current);
-		}
+		current = *head;
+		(*head) = (*head)->next;
+		free(current);
 	}
 }

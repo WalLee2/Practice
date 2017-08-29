@@ -22,16 +22,20 @@ int opcode_check(char *tok, stack_t **head, unsigned int l_num)
 		{"mod", m_mod},
 		{"pchar", m_pchar},
 		{"pstr", m_pstr},
-		{"rotl", m_rotl}
+		{"rotl", m_rotl},
+		{"rotr", m_rotr}
 	};
 	unsigned long size, i;
+	int status;
 
 	size = sizeof(code) / sizeof(code[0]);
 	for (i = (size - 1); i < size; i--)
 	{
 		if (strcmp(tok, code[i].opcode) == 0)
 		{
-			code[i].f(head, l_num);
+			status = code[i].f(head, l_num);
+			if (status == -1)
+				return (-1);
 			return (0);
 		}
 	}

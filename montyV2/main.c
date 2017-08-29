@@ -5,7 +5,6 @@
  * @av: User entered inputs from standard input
  * Return - 0 on success
  */
-int error = 0;
 int main(int ac, char *av[])
 {
 	int result;
@@ -14,6 +13,7 @@ int main(int ac, char *av[])
 	char *buffsize;
 	stack_t *head;
 	size_t len;
+	int state;
 
 	head = NULL;
 	fd = NULL;
@@ -29,18 +29,18 @@ int main(int ac, char *av[])
 		printf("Error: Can't open file %s\n", av[1]);
 		exit(EXIT_FAILURE);
 	}
-	len = 6;
+	len = 0;
+	state = 0;
 	for (l_num = 1; getline(&buffsize, &len, fd) != -1; l_num++)
 	{
-		result = parse_line(buffsize, &head, l_num);
-		if (error == 1 || result == -1)
+		result = parse_line(buffsize, &head, l_num, &state);
+		if (result == -1)
 		{
 			free_dllist(&head);
 			free(buffsize);
 			fclose(fd);
 			exit(EXIT_FAILURE);
 		}
-
 	}
 	free_dllist(&head);
 	free(buffsize);

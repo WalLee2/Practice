@@ -29,30 +29,28 @@ typedef struct stack_s
 typedef struct instruction_s
 {
 	char *opcode;
-	void (*f)(stack_t **, unsigned int);
+	int (*f)(stack_t **, unsigned int);
 } instruction_t;
-extern int error;
-int parse_line(char *buff, stack_t **head, unsigned int l_num);
+int parse_line(char *buff, stack_t **head, unsigned int l_num, int *state);
 int num_check(char *str, unsigned int l_num);
 int opcode_check(char *tok, stack_t **head, unsigned int l_num);
-void add_node_begin(stack_t **head, int num);
-void add_node_end(stack_t **head, int num);
+int add_node_begin(stack_t **head, int num);
+int add_node_end(stack_t **head, int num);
 /*opcode function prototypes*/
-void m_push(stack_t **head, int num, int toggle);
-void m_pall(stack_t **head, unsigned int l_num);
-void m_pint(stack_t **head, unsigned int l_num);
-void m_pop(stack_t **head, unsigned int l_num);
-void m_swap(stack_t **head, unsigned int l_num);
-void m_add(stack_t **head, unsigned int l_num);
-void m_sub(stack_t **head, unsigned int l_num);
-void m_div(stack_t **head, unsigned int l_num);
-void m_mul(stack_t **head, unsigned int l_num);
-void m_mod(stack_t **head, unsigned int l_num);
-void m_pchar(stack_t **head, unsigned int l_num);
-void m_pstr(stack_t **head, unsigned int l_num);
-void m_rotl(stack_t **head, unsigned int l_num);
-
+int m_push(stack_t **head, int num, int *state);
+int m_pall(stack_t **head, unsigned int l_num);
+int m_pint(stack_t **head, unsigned int l_num);
+int m_pop(stack_t **head, unsigned int l_num);
+int m_swap(stack_t **head, unsigned int l_num);
+int m_add(stack_t **head, unsigned int l_num);
+int m_sub(stack_t **head, unsigned int l_num);
+int m_div(stack_t **head, unsigned int l_num);
+int m_mul(stack_t **head, unsigned int l_num);
+int m_mod(stack_t **head, unsigned int l_num);
+int m_pchar(stack_t **head, unsigned int l_num);
+int m_pstr(stack_t **head, unsigned int l_num);
+int m_rotl(stack_t **head, unsigned int l_num);
+int m_rotr(stack_t **head, unsigned int l_num);
 /*free doubly linked list*/
 void free_dllist(stack_t **head);
-
 #endif

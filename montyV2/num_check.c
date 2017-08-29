@@ -17,7 +17,6 @@ int num_check(char *str, unsigned int l_num)
 		if (str[i] < '0' || str[i] > '9')
 		{
 			printf("L%d: usage: push integer\n", l_num);
-			error = 1;
 			return (0);
 		}
 	}
