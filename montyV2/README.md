@@ -1,6 +1,7 @@
 # Monty Project
 ## Description:
-The monty program opens up a file, reads each line, and executes functions according to certain keywords or opcodes that it reads. The monty program will continue to read each line until the end of the file.
+The Monty project aims to help build understanding of what a stack and queue memory storage is. Understanding achieved through implementing many functionalities.
+At a very high level, the program opens a file, reads the first line, tokenizes the individual members of the line and executes functions according to keywords or opcodes. The opcodes are what sets up the stack and queue storage.
 ### Usage:
 ./monty file
 
