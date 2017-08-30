@@ -10,7 +10,6 @@ int m_push(stack_t **head, int num, int *state)
 {
 	int status;
 
-	printf("value of state: %d\n", *state);
 	if (*state == 1)
 	{
 		status = add_node_end(head, num);
