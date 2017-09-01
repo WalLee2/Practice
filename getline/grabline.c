@@ -19,6 +19,7 @@ void *_realloc(void *ptr, size_t size)
 			printf("Realloc failed!\n");
 			return (NULL);
 		}
+		free(ptr);
 		return (new);
 	}
 	else if (ptr != NULL && size == 0) {
@@ -47,7 +48,7 @@ void *_realloc(void *ptr, size_t size)
  */
 ssize_t grabline(char **l_ptr, size_t *n, FILE *stream)
 {
-	int errno, c;
+	int errno, c, state;
 	size_t size, i, idx;
 	char *holder, *p;
 
@@ -62,28 +63,36 @@ ssize_t grabline(char **l_ptr, size_t *n, FILE *stream)
 			return (-1);
 		}
 	}
-	p = *l_ptr;
-	for (i = 0; i < size && (c = fgetc(stream)) != EOF; i++)
+	state = 0;
+	for (p = *l_ptr, i = 0; i < size; i++)
 	{
-		if (i == (size - 1) && c != '\n') {
+		if ((c = fgetc(stream)) == EOF) {
+			break;
+		}
+		if (c == '\n') {
+			state = 1;
+			break;
+		}
+		if (i == (size - 1)) {
 			idx = size;
 			size = size * 2;
 			holder = _realloc(l_ptr, sizeof(size));
 			if (holder == NULL) {
 				free(*l_ptr);
+				errno = ENOMEM;
+				printf("%s\n", strerror(errno));
 				return (-1);
 			}
+			free(*l_ptr);
 			*l_ptr = holder;
 			free(holder);
 			p = l_ptr[idx];
 		}
-		else if (c == EOF || c == '\0') {
-			break;
-		}
 		*p++ = c;
 	}
+	if (state == 1)
+		*p++ = '\n';
 	*p++ = '\0';
-	*p++ = '\n';
-	printf("%s\n", *l_ptr);
+	printf("%s", *l_ptr);
 	return (i);
 }
