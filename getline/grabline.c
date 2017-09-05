@@ -6,35 +6,33 @@
  * Return: The newly resized buffer with the contents properly copied over
  * if there were any in the old buffer.
  */
-
-void *_realloc(void *ptr, size_t size)
+char *_realloc(void *buf1, void *buf2, size_t *size)
 {
-	char *new, *old_str;
-	size_t i;
+	char *new, *cbuf2, *ptr;
+	size_t temp_size, i;
 
 	new = NULL;
-	if (ptr == NULL) {
-		new = malloc(size);
-		if (new == NULL) {
-			printf("Realloc failed!\n");
-			return (NULL);
-		}
-		free(ptr);
-		return (new);
-	}
-	else if (ptr != NULL && size == 0) {
+	if (buf1 != NULL && buf2 != NULL && size == 0) {
 		printf("Size is zero and ptr is not NULL\n");
-		free(ptr);
+		free(buf1);
+		free(buf2);
 		return (NULL);
 	}
-	new = malloc(size);
+	temp_size = *size;
+	*size += 120;
+	new = malloc(*size * sizeof(*new));
 	if (new == NULL) {
 		printf("Realloc failed!\n");
 		return (NULL);
 	}
-	old_str = ptr;
-	for (i = 0; i < size; i++) {
-		new[i] = old_str[i];
+	new = memset(new, '\0', *size);
+	new = memcpy(new, buf1, temp_size);
+	for (ptr = new; *ptr != '\0'; ptr++)
+		;
+	cbuf2 = NULL;
+	cbuf2 = (char *)buf2;
+	for (i = 0; cbuf2[i] != '\0'; i++) {
+		*ptr++ = cbuf2[i];
 	}
 	return (new);
 }
@@ -48,51 +46,65 @@ void *_realloc(void *ptr, size_t size)
  */
 ssize_t grabline(char **l_ptr, size_t *n, FILE *stream)
 {
-	int errno, c, state;
-	size_t size, i, idx;
-	char *holder, *p;
+	int errno, n_bytes, state, fd, total;
+	char *holder, *next_chars, *first;
 
-	if (*l_ptr == NULL && *n == 0)
-	{
-		size = 120;
-		*l_ptr = malloc(size * sizeof(**l_ptr));
-		if (*l_ptr == NULL)
-		{
+	state = n_bytes = total = 0;
+	first = next_chars = holder = NULL;
+	if (*l_ptr == NULL) {
+		if (*n == 0) {
+			*n = 120;
+		}
+		first = malloc(*n * sizeof(*first));
+		if (first == NULL) {
 			errno = ENOMEM;
 			printf("%s\n", strerror(errno));
 			return (-1);
 		}
+		first = memset(first, '\0', *n);
+		*l_ptr = first;
+		state = 1;
 	}
-	state = 0;
-	for (p = *l_ptr, i = 0; i < size; i++)
+	fd = fileno(stream);
+	n_bytes = read(fd, *l_ptr, *n);
+	if (n_bytes == -1){
+		printf("Read Error!\n");
+		return (-1);
+	}
+	total = n_bytes;
+	while (n_bytes > 0)
 	{
-		if ((c = fgetc(stream)) == EOF) {
+		next_chars = malloc(*n * sizeof(*next_chars));
+		if (next_chars == NULL) {
+			errno = ENOMEM;
+			printf("%s\n", strerror(errno));
+			return (-1);
+		}
+		n_bytes = read(fd, next_chars, *n);
+		if (n_bytes == -1)
+		{
+			printf("Read Error!\n");
+			return (-1);
+		}
+		else if (n_bytes == 0) {
 			break;
 		}
-		if (c == '\n') {
-			state = 1;
-			break;
-		}
-		if (i == (size - 1)) {
-			idx = size;
-			size = size * 2;
-			holder = _realloc(l_ptr, sizeof(size));
-			if (holder == NULL) {
-				free(*l_ptr);
-				errno = ENOMEM;
-				printf("%s\n", strerror(errno));
-				return (-1);
-			}
-			free(*l_ptr);
-			*l_ptr = holder;
+		total += n_bytes;
+		if (holder != NULL)
 			free(holder);
-			p = l_ptr[idx];
+		holder = _realloc(*l_ptr, next_chars, n);
+		if (holder == NULL)
+		{
+			printf("Realloc failed!\n");
+			return (-1);
 		}
-		*p++ = c;
+		if (state == 1) {
+			free(first);
+			state = 0;
+		}
+		*l_ptr = holder;
+		free(next_chars);
 	}
-	if (state == 1)
-		*p++ = '\n';
-	*p++ = '\0';
-	printf("%s", *l_ptr);
-	return (i);
+	free(next_chars);
+	return (total);
 }
