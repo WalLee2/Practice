@@ -43,7 +43,7 @@ int _isUnique(char *str)
 		printf("malloc failed!\n");
 		return (1);
 	}
-	for (i = 0; i <= size; i++) {
+	for (i = 0; i < size; i++) {
 		status = check_arr(str[i], char_arr, &place);
 		if (status == 1) {
 			free(char_arr);
