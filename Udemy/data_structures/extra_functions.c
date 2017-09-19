@@ -30,7 +30,34 @@ void free_mem(Stack *sp)
  *
  *
  */
-int getSize(Stack *sp)
-{
+int getSize(Stack *sp) {
 	return (sp->size);
+}
+/**
+ *
+ *
+ *
+ *
+ *
+ */
+void printBinary(unsigned int value) {
+	Stack stack;
+	int result, size, temp;
+	const int BASE = 2;
+
+	temp = value;
+	size = 10;
+	init(&stack, size);
+	while (temp != 0) {
+		result = temp % BASE;
+		push(&stack, result);
+		temp /= BASE;
+	}
+	printf("Binary of %u is: ", value);
+	while (stack.top != -1) {
+		printf("%d", pop(&stack));
+	}
+	printf("\n");
+	free_mem(&stack);
+	exit(0);
 }
