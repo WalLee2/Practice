@@ -11,13 +11,14 @@
  *
  */
 typedef struct {
-        int *item;
+        char *item;
         int top;
 	int size;
 } Stack;
 void init(Stack *, int);
 void free_mem(Stack *);
-int push(Stack *, int);
+void push(Stack *, char);
 int pop(Stack *);
 int getSize(Stack *);
+void printBinary(unsigned int);
 #endif
