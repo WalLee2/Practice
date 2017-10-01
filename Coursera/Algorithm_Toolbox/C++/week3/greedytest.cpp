@@ -1,16 +1,17 @@
 #include <iostream>
 #include <map>
+#include <vector>
 
 using std::map;
 using std::cout;
+using std::vector;
 
-
-void sortedGroups(double *arr, map<double, double> returnedSet, const size_t size) {
+void sortedGroups(double *arr, map<double, vector<double> > groups, const size_t size) {
 	size_t i, j;
 
 	for (i = 0; i < size; ++i) {
 		for (j = i; j <= (arr[j] + 1); ++j) {
-			returnedSet.insert(map<double, double>::value_type(arr[i], arr[j + 1]));
+			groups.insert(std::make_pair(arr[i], vector<double>(arr[j + 1])));
 		}
 		while (i < size && i <= arr[i] + 1) {
 			++i;
@@ -20,13 +21,22 @@ void sortedGroups(double *arr, map<double, double> returnedSet, const size_t siz
 
 int main(void) {
 	double arr[] = {5, 5.1, 5.3, 5.4, 5.5, 6, 6.3, 7, 7.7, 7.8, 7.9, 8};
-	map<double, double> returnedSet;
-	map<double, double>::const_iterator it;
+	map<double, vector<double> > groups;
 	size_t size;
 
 	size = sizeof(arr) / sizeof(arr[0]);
-	sortedGroups(arr, returnedSet, size);
-	for (it = returnedSet.begin(); it != returnedSet.end(); ++it) {
-		cout << it->first << " " << it->second << '\n';
+	sortedGroups(arr, groups, size);
+/*
+	auto it = groups.begin();
+	cout << it->first << " : ";
+	auto it2 = it->second.begin();
+	cout << *it2 << "\n";
+*/
+	for (auto it = groups.begin(); it != groups.end(); ++it) {
+		cout << it->first << " : ";
+		for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
+			cout << *it2 << ", ";
+		}
 	}
+	cout << "\n";
 }
