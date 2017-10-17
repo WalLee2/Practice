@@ -2,8 +2,6 @@
 #include <iostream>
 #include <vector>
 
-using std::vector;
-
 /**
  * merge - Void function that merges two array elements together where the first
  * element is smaller than the second element.
@@ -76,28 +74,21 @@ void merge_sort(vector<int> &array, size_t low, size_t high) {
  * Return: Return 1 on finding the number 0 otherwise
  */
 int binary_search(vector<int> &a, int value, int index) {
-	int mid, i, low, high;
+	int mid, low, high;
 
 	low = 0;
-	high = ((int)a.size() - 1);
-	mid = low + (high - low) / 2;
-	if (value > a[mid]) {
-		for (i = mid + 1; i < high; ++i) {
-			if (value == a[i] && index != i) {
-				a.erase(a.begin() + i);
-				return (1);
-			}
-		}
-	} else if (value < a[mid]) {
-		for (i = 0; i < mid; ++i) {
-			if (value == a[i] && index != i) {
-				a.erase(a.begin() + i);
-				return (1);
-			}
-		}
-	} else if (value == a[mid] && index != mid) {
-		return (1);
+	high = ((int)a.size());
 
+	while (high - low > 1) {
+		mid = low + (high - low) / 2;
+		if (value >= a[mid]) {
+			low = mid;
+		} else {
+			high = mid;
+		}
+	}
+	if (value == a[low] && index != low) {
+		return (1);
 	}
 	return (0);
 }
