@@ -11,9 +11,6 @@ int num_check(char *str, unsigned int l_num)
 
 	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (str[i] == '-' &&
-		    (str[i++] >= '0' && str[i++] <= '9'))
-			i++;
 		if (str[i] < '0' || str[i] > '9')
 		{
 			printf("L%d: usage: push integer\n", l_num);
