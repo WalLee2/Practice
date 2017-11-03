@@ -5,6 +5,9 @@ At a very high level, the program opens a file, reads the first line, tokenizes 
 ### Usage:
 ./monty file
 
+### Compilation:
+gcc -Wall -Werror -Wextra -pedantic *.c -o monty
+
 |                  File                                    |                     Description                     |
 | :-----------------------------------------: |  :-----------------------------------------------:  |
 | add_node.c        |  Functions that add node to the beginning or end of a doubly LL.  |
@@ -17,3 +20,30 @@ At a very high level, the program opens a file, reads the first line, tokenizes 
 | op_push_pall_pint_pop_swap.c |  Contains opcodes that manipulate the DLL.  |
 | opcode_check.c    |  Compares the token with each string in the array of structs and runs the appropriate function or returns an error and cleans up memory.  |
 | parse_line.c      |  Tokenizes the line that's read from file passed from main.  |
+
+### Example Usage:
+```
+wallee@ubuntu:~$ cat -e 01.m 
+push 0$
+push 1$
+push 2$
+  push 3$
+                   pall    $
+push 4$
+    push 5    $
+      push    6        $
+pall$
+wallee@ubuntu:~$ ./monty 01.m
+3
+2
+1
+0
+6
+5
+4
+3
+2
+1
+0
+wallee@ubuntu:~$ 
+```
