@@ -8,14 +8,15 @@ using std::sort;
 using std::unordered_set;
 using std::vector;
 
-size_t binary_search(vector<int> longer, size_t low, size_t high, int target) {
-	size_t mid;
+int binary_search(vector<int> longer, int low, int high, int target) {
+	int mid;
 
 	if (low <= high) {
 		mid = low + (high - low) / 2;
 		if (longer[mid] == target) {
 			return (mid);
-		} else if (longer[mid] > target) {
+		}
+		if (longer[mid] > target) {
 			return (binary_search(longer, low, (mid - 1), target));
 		} else {
 			return (binary_search(longer, (mid + 1), high, target));
@@ -33,12 +34,9 @@ void search_insert(vector<int>longer, vector<int>shorter, unordered_set<int> &no
 	if (!longer.empty() && !shorter.empty()) {
 		for (i = 0; i < size; i++) {
 			idx = binary_search(longer, start_idx, (size - 1), shorter[i]);
-			cout << "value of idx: " << idx << '\n';
 			if (idx != -1) {
-				start_idx = (size_t)idx + 1;
+				start_idx = idx;
 				no_dup.insert(longer[idx]);
-				auto itr = no_dup.find(longer[idx]);
-				cout << "no_dup value: " << *itr << '\n';
 			}
 		}
 	}
@@ -50,15 +48,7 @@ vector<int> intersection(vector<int> &num1, vector<int> &num2) {
 	unordered_set<int> no_dup;
 
 	sort(num1.begin(), num1.end());
-	for (size_t i = 0; i < (num1.size() - 1); i++) {
-		cout << num1[i] << ", ";
-	}
-	cout << '\n';
 	sort(num2.begin(), num2.end());
-	for (size_t i = 0; i < (num2.size() - 1); i++) {
-		cout << num2[i] << ", ";
-	}
-	cout << '\n';
 	if (num1.size() > num2.size()) {
 		search_insert(num1, num2, no_dup);
 	} else {
@@ -73,8 +63,8 @@ vector<int> intersection(vector<int> &num1, vector<int> &num2) {
 int main(void) {
 	vector<int> num1, num2, result;
 
-	num1.insert(num1.end(), {6,27,25,20,71,43,68,36,46,50});
-	num2.insert(num2.end(), {82,5,78,62,23,31,75});
+	num1.insert(num1.end(), {3, 1, 2});
+	num2.insert(num2.end(), {1});
 	result = intersection(num1, num2);
 	for (size_t i = 0; i < result.size(); i++) {
 		cout << result[i];
