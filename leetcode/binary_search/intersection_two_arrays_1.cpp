@@ -35,7 +35,7 @@ void search_insert(vector<int>longer, vector<int>shorter, unordered_set<int> &no
 		for (i = 0; i < size; i++) {
 			idx = binary_search(longer, start_idx, (size - 1), shorter[i]);
 			if (idx != -1) {
-				start_idx = idx;
+				start_idx = idx + 1;
 				no_dup.insert(longer[idx]);
 			}
 		}
